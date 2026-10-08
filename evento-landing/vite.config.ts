@@ -19,4 +19,13 @@ export default defineConfig({
     server: {
     allowedHosts: true, entry: "server" },
   },
+  // SSR en Cloudflare Workers via Nitro. Sin esto `vite build` fuera del
+  // sandbox genera solo assets SSR (dist/client sin index.html) y no hay Worker.
+  // Con `deployConfig: true` Nitro genera/mezcla el wrangler.json del output.
+  nitro: {
+    preset: "cloudflare-module",
+    compatibilityDate: "2026-10-05",
+    output: { dir: "dist", serverDir: "dist/server", publicDir: "dist/client" },
+    cloudflare: { deployConfig: true, nodeCompat: true },
+  },
 });
